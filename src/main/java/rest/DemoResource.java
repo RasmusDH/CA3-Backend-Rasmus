@@ -3,7 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import dtos.Example.AnimeDTO;
-import dtos.Example.BeerDTO;
+import dtos.BeerDTO.BeerDTO;
 import dtos.Example.CatDTO;
 import dtos.Example.ChuckDTO;
 import dtos.Example.CombinedDTO;

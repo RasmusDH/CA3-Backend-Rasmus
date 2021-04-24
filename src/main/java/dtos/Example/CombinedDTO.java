@@ -5,6 +5,7 @@
  */
 package dtos.Example;
 
+import dtos.BeerDTO.BeerDTO;
 import java.util.List;
 
 /**

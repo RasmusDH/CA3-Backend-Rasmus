@@ -1,12 +1,14 @@
 package security;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
@@ -15,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import entities.User;
 import javax.ws.rs.GET;
 import javax.ws.rs.WebApplicationException;
@@ -37,6 +40,7 @@ public class LoginEndpoint {
     public static final int TOKEN_EXPIRE_TIME = 1000 * 60 * 30; //30 min
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     public static final UserFacade USER_FACADE = UserFacade.getUserFacade(EMF);
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -69,6 +73,7 @@ public class LoginEndpoint {
             JsonObject responseJson = new JsonObject();
             responseJson.addProperty("username", username);
             responseJson.addProperty("token", token);
+            responseJson.addProperty("beers", GSON.toJson(user.getBeers()));
             return Response.ok(new Gson().toJson(responseJson)).build();
 
         } catch (JOSEException | AuthenticationException ex) {
@@ -79,7 +84,13 @@ public class LoginEndpoint {
         }
         throw new AuthenticationException("Invalid username or password! Please try again");
     }
-
+    
+    @GET
+    @Path("/msg")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getInfoForAll() {
+        return "{\"msg\":\"Hello anonymous\"}";
+    }
     private String createToken(String userName, List<String> roles) throws JOSEException {
 
         StringBuilder res = new StringBuilder();
