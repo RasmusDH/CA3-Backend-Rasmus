@@ -47,6 +47,27 @@ public class BeerResource extends Provider {
     @Context
     SecurityContext securityContext;
     
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("fetchbeer")
+    public String getBeerData() {
+        List<BeerDTO> dto = new ArrayList<>();
+        try {
+            String JsonResponse = HttpUtil.fetchData("https://api.punkapi.com/v2/beers/random");
+            //dto = gson.fromJson(JsonResponse, BeerDTO.class);
+            
+            // Setup type that GSON can accept (List<BeerDTO> inside the TypeToken)
+            Type type = new TypeToken<List<BeerDTO>>() {
+            }.getType();
+
+            // use that type to generate list
+            dto = gson.fromJson(JsonResponse, type);
+        } catch (Exception e) {
+        }
+        return gson.toJson(dto);
+
+    }
 
     @Override
     public Response getById(int id) {

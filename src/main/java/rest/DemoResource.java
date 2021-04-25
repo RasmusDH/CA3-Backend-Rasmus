@@ -96,6 +96,8 @@ public class DemoResource {
         return gson.toJson(dto);
 
     }
+    
+    
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

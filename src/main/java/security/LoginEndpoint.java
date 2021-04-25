@@ -12,6 +12,7 @@ import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import dtos.UserDTO;
 import facades.UserFacade;
 import java.util.Date;
 import java.util.List;
@@ -68,8 +69,9 @@ public class LoginEndpoint {
         }
 
         try {
-            User user = USER_FACADE.getVeryfiedUser(username, password);
+            UserDTO user = USER_FACADE.getVeryfiedUser(username, password);
             String token = createToken(username, user.getRolesAsStrings());
+            System.out.println(user.toString());
             JsonObject responseJson = new JsonObject();
             responseJson.addProperty("username", username);
             responseJson.addProperty("token", token);
