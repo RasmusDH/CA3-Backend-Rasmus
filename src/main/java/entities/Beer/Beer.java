@@ -39,6 +39,7 @@ public class Beer implements Serializable {
     private Integer id;
     private String beerName;
     private String tagline;
+    @Column(columnDefinition = "TEXT")
     private String description;
     
     
